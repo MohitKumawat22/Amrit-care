@@ -2,12 +2,16 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { getProviders, signIn } from "next-auth/react";
 import { useState } from "react";
-import { Eye, EyeOff, AlertCircle, Loader2, ArrowLeft, Stethoscope } from "lucide-react";
+import {
+  Eye, EyeOff, AlertCircle, Loader2, ArrowLeft, Stethoscope,
+  LockKeyhole, Smartphone,
+} from "lucide-react";
 
 const AUTH_MODES = [
-  { id: "password", label: "Password", icon: "🔒" },
-  { id: "otp", label: "OTP", icon: "📱" },
+  { id: "password", label: "Password", icon: LockKeyhole },
+  { id: "otp", label: "One-time code", icon: Smartphone },
 ];
 
 export default function PatientLoginPage() {
@@ -31,6 +35,24 @@ export default function PatientLoginPage() {
     next[i] = val;
     setOtp(next);
     if (val && i < 5) document.getElementById(`otp-${i + 1}`)?.focus();
+  };
+
+  const handleGoogleLogin = async () => {
+    setError("");
+    setLoading(true);
+    try {
+      const providers = await getProviders();
+      if (!providers?.google) {
+        setError("Google sign-in is not configured. Please use password login.");
+        return;
+      }
+
+      await signIn("google", { callbackUrl: "/patient/google-callback" });
+    } catch (err) {
+      setError("Google sign-in could not be completed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleLogin = async (e) => {
@@ -71,42 +93,39 @@ export default function PatientLoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-gray-50">
-      {/* Decorative blurs */}
-      <div className="absolute top-10 right-[15%] w-72 h-72 rounded-full bg-teal-500/5 blur-3xl animate-float pointer-events-none" />
-      <div className="absolute bottom-10 left-[10%] w-80 h-80 rounded-full bg-cyan-500/5 blur-3xl animate-float-delayed pointer-events-none" />
-
-      <div className="w-full max-w-md relative z-10">
+    <main className="min-h-screen flex items-center justify-center p-4 sm:p-8 bg-[#e8f1ed]">
+      <div className="w-full max-w-md">
         <Link href="/" className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 font-medium transition-colors mb-6 no-underline">
           <ArrowLeft className="w-4 h-4" />
           Back to Home
         </Link>
 
-        <div className="bg-white border border-gray-200 shadow-lg rounded-2xl p-8 sm:p-10">
+        <div className="bg-white border border-[#d9ddd6] shadow-[0_12px_36px_rgba(43,61,56,0.1)] rounded-xl p-6 sm:p-10">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-br from-teal-500 to-teal-700 flex items-center justify-center mb-5 shadow-lg shadow-teal-500/15">
+            <div className="w-14 h-14 mx-auto rounded-lg bg-teal-700 flex items-center justify-center mb-5">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
             </div>
             <h1 className="text-2xl font-bold text-gray-900 tracking-tight mb-2">Patient Login</h1>
-            <p className="text-sm text-gray-500">Access your AmritCare AI health portal</p>
+            <p className="text-sm text-gray-500">Sign in to manage your care, medicines, and appointments.</p>
           </div>
 
           {/* Auth mode tabs */}
-          <div className="flex gap-1 p-1 rounded-xl bg-gray-100 mb-8" role="tablist">
+          <div className="flex gap-1 p-1 rounded-lg bg-[#f1eee7] mb-8" role="tablist" aria-label="Sign-in method">
             {AUTH_MODES.map((m) => (
               <button
                 key={m.id}
+                type="button"
                 role="tab"
                 aria-selected={mode === m.id}
                 onClick={() => { setMode(m.id); setError(""); }}
-                className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-xs font-bold transition-all ${
+                className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-md text-xs font-bold transition-all ${
                   mode === m.id
                     ? "bg-white text-teal-700 shadow-sm border border-gray-200"
                     : "text-gray-500 hover:text-gray-700"
                 }`}
               >
-                <span>{m.icon}</span>
+                <m.icon className="w-4 h-4" aria-hidden="true" />
                 <span>{m.label}</span>
               </button>
             ))}
@@ -120,7 +139,7 @@ export default function PatientLoginPage() {
             </div>
           )}
 
-          <form onSubmit={handleLogin} className="space-y-5">
+          <form onSubmit={handleLogin} className="space-y-5" aria-busy={loading}>
             {/* Password Mode */}
             {mode === "password" && (
               <>
@@ -212,13 +231,10 @@ export default function PatientLoginPage() {
           </div>
 
           {/* Social */}
-          <div className="grid grid-cols-2 gap-3">
-            <button className="flex items-center justify-center gap-2 bg-white border border-gray-200 py-3 rounded-xl text-sm font-bold text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all" aria-label="Sign in with Google">
+          <div className="grid grid-cols-1 gap-3">
+            <button type="button" onClick={handleGoogleLogin} disabled={loading} className="flex items-center justify-center gap-2 bg-white border border-gray-200 py-3 rounded-xl text-sm font-bold text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all disabled:opacity-50" aria-label="Sign in with Google">
               <svg viewBox="0 0 24 24" width="18" height="18"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/><path d="M1 1h22v22H1z" fill="none"/></svg>
               Google
-            </button>
-            <button className="flex items-center justify-center gap-2 bg-white border border-gray-200 py-3 rounded-xl text-sm font-bold text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all" aria-label="Sign in with Aadhaar">
-              💳 Aadhaar
             </button>
           </div>
 
@@ -237,6 +253,6 @@ export default function PatientLoginPage() {
           </p>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

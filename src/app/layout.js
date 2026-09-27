@@ -9,12 +9,12 @@ export const viewport = {
   maximumScale: 1,
   userScalable: false,
   viewportFit: "cover",
-  themeColor: "#0D9488",
+  themeColor: "#187C73",
 };
 
 export const metadata = {
-  title: "AmritCare AI — Smart Healthcare Platform",
-  description: "AI-powered healthcare platform — symptom triage, hospital locator, and medicine reminders.",
+  title: "AmritCare — Care, made clearer",
+  description: "Manage symptoms, appointments, medicines, and nearby care in one place.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
@@ -42,7 +42,7 @@ export default function RootLayout({ children }) {
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="AmritCare" />
       </head>
-      <body className="min-h-full flex flex-col gradient-bg text-[15px] leading-relaxed overscroll-y-contain">
+      <body className="min-h-full flex flex-col text-[15px] leading-relaxed overscroll-y-contain">
         <AuthProvider>
           <PWAProvider>
             <MedicineAlarmService />

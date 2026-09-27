@@ -64,7 +64,7 @@ export async function POST(request) {
 
     if (!twilioConfigured) {
       console.warn(
-        "⚠️  [Calls] Twilio is not configured. The call will be saved as 'scheduled' " +
+        "[Calls] Twilio is not configured. The call will be saved as 'scheduled' " +
         "but will NOT fire until TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER, " +
         "and NGROK_URL are all set in .env.local, and the call-worker.js process is running."
       );

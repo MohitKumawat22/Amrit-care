@@ -438,7 +438,7 @@ export default function TriageChat() {
                   onClick={voice.stop}
                   className="text-xs font-semibold text-rose-600 hover:text-rose-700 bg-white/95 px-3 py-1 rounded-full border border-rose-200 shadow-sm transition-colors"
                 >
-                  ✕ End Voice Call
+                  End voice call
                 </button>
               </div>
             )}

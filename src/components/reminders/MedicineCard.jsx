@@ -15,7 +15,7 @@ export default function MedicineCard({ reminder, onEdit, onDelete }) {
  <div className="flex justify-between items-start mb-6">
  <div className="flex gap-4">
  <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl shadow-lg shadow-emerald-200 group-hover:scale-110 transition-transform duration-500">
- {reminder.medicineType ==="tablet" ?"💊" : reminder.medicineType ==="syrup" ?"🧪" :"💉"}
+ {reminder.medicineType ==="tablet" ?"Tablet" : reminder.medicineType ==="syrup" ?"Liquid" :"Injection"}
  </div>
  <div>
  <h3 className="text-lg font-black text-gray-900 leading-tight mb-1">{reminder.medicineName}</h3>

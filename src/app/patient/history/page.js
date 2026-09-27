@@ -410,14 +410,14 @@ export default function PatientHistoryPage() {
                             {/* Recommendation / Summary preview */}
                             {isTriage && entry.recommendation && (
                               <div className="mt-3 p-3 rounded-lg bg-teal-50/70 border border-teal-200/80 text-xs text-teal-900 leading-relaxed font-medium">
-                                💊 {entry.recommendation.slice(0, 160)}
+                                Recommendation: {entry.recommendation.slice(0, 160)}
                                 {entry.recommendation.length > 160 ? "..." : ""}
                               </div>
                             )}
 
                             {isCall && entry.summary && (
                               <div className="mt-3 p-3 rounded-lg bg-gray-50 border border-gray-200 text-xs text-gray-700 leading-relaxed">
-                                📋 {entry.summary.slice(0, 160)}
+                                Summary: {entry.summary.slice(0, 160)}
                                 {entry.summary.length > 160 ? "..." : ""}
                               </div>
                             )}

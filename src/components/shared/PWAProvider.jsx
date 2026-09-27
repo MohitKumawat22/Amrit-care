@@ -6,8 +6,14 @@ import { Download, WifiOff, X, CheckCircle2, Smartphone } from "lucide-react";
 export default function PWAProvider({ children }) {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showInstallBanner, setShowInstallBanner] = useState(false);
-  const [isOffline, setIsOffline] = useState(false);
-  const [isInstalled, setIsInstalled] = useState(false);
+  const [isOffline, setIsOffline] = useState(() =>
+    typeof navigator !== "undefined" && !navigator.onLine
+  );
+  const [isInstalled, setIsInstalled] = useState(() =>
+    typeof window !== "undefined" &&
+    (window.matchMedia("(display-mode: standalone)").matches ||
+      window.navigator.standalone === true)
+  );
 
   useEffect(() => {
     // 1. Service Worker Registration
@@ -25,13 +31,6 @@ export default function PWAProvider({ children }) {
     }
 
     // 2. Check if already running in standalone PWA mode
-    if (
-      window.matchMedia("(display-mode: standalone)").matches ||
-      window.navigator.standalone === true
-    ) {
-      setIsInstalled(true);
-    }
-
     // 3. Listen for PWA Install Prompt
     const handleBeforeInstall = (e) => {
       e.preventDefault();
@@ -51,8 +50,6 @@ export default function PWAProvider({ children }) {
 
     window.addEventListener("online", handleOnline);
     window.addEventListener("offline", handleOffline);
-    if (!navigator.onLine) setIsOffline(true);
-
     return () => {
       window.removeEventListener("beforeinstallprompt", handleBeforeInstall);
       window.removeEventListener("online", handleOnline);
@@ -100,7 +97,7 @@ export default function PWAProvider({ children }) {
           aria-label="Install AmritCare Application"
         >
           <div className="flex items-start gap-3.5">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-500 to-teal-700 flex items-center justify-center text-white shrink-0 shadow-md shadow-teal-500/20">
+            <div className="w-12 h-12 rounded-lg bg-teal-700 flex items-center justify-center text-white shrink-0 shadow-md">
               <Smartphone className="w-6 h-6" />
             </div>
 

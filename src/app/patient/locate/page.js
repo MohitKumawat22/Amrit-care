@@ -356,7 +356,7 @@ export default function LocatePage() {
                     </span>
                     {facility.emergency && (
                       <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200">
-                        🚨 24/7 ER
+                        24/7 emergency care
                       </span>
                     )}
                     <span

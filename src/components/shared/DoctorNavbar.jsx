@@ -17,12 +17,12 @@ export default function DoctorNavbar({ doctorName = "" }) {
   const isSettings = pathname === "/doctor/settings";
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/[0.08] bg-[#0B0F1A]/90 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-white/[0.1] bg-[#24312f]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         {/* Brand */}
         <div className="flex items-center gap-3">
           <Link href="/doctor/dashboard" className="flex items-center gap-2.5 no-underline">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-teal-500 to-emerald-600 flex items-center justify-center shadow-lg shadow-teal-500/20">
+            <div className="w-9 h-9 rounded-lg bg-[#187c73] flex items-center justify-center">
               <Stethoscope className="w-5 h-5 text-white" />
             </div>
             <span className="text-lg font-bold text-white tracking-tight">

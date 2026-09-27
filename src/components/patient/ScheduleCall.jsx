@@ -355,7 +355,7 @@ export default function ScheduleCall({ patientId }) {
               : "btn-primary shadow-sm"
           }`}
         >
-          {showForm ? "✕ Close" : "+ Schedule Call"}
+          {showForm ? "Close" : "Schedule Call"}
         </button>
       </div>
 

@@ -29,18 +29,18 @@ export default function AlarmPopup({ reminder, onTake, onSkip, onSnooze }) {
  <button onClick={onTake}
  className="bg-emerald-600 hover:bg-emerald-700 text-white font-black py-6 rounded-3xl text-xl shadow-xl shadow-emerald-200 transition-all active:scale-95 uppercase tracking-widest"
  >
- ✅ I've Taken It
+ I've taken it
  </button>
  <div className="grid grid-cols-2 gap-4">
  <button onClick={onSnooze}
  className="bg-amber-100 hover:bg-amber-200 text-amber-700 font-black py-4 rounded-3xl text-sm transition-all active:scale-95 uppercase tracking-widest"
  >
- ⏳ Snooze
+ Snooze
  </button>
  <button onClick={onSkip}
  className="bg-gray-100 hover:bg-gray-200 text-gray-500 font-black py-4 rounded-3xl text-sm transition-all active:scale-95 uppercase tracking-widest"
  >
- ❌ Skip
+ Skip
  </button>
  </div>
  </div>

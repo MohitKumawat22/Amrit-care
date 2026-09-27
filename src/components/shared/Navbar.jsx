@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   LayoutDashboard,
   Activity,
@@ -25,13 +25,12 @@ const NAV_ITEMS = [
 
 export default function Navbar({ refillCount = 0 }) {
   const pathname = usePathname();
-  const [patient, setPatient] = useState(null);
-  const [mobileOpen, setMobileOpen] = useState(false);
-
-  useEffect(() => {
+  const [patient] = useState(() => {
+    if (typeof window === "undefined") return null;
     const stored = JSON.parse(sessionStorage.getItem("medconnect_patient") || "null");
-    if (stored?.id) setPatient(stored);
-  }, []);
+    return stored?.id ? stored : null;
+  });
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleLogout = () => {
     sessionStorage.removeItem("medconnect_patient");
@@ -49,13 +48,12 @@ export default function Navbar({ refillCount = 0 }) {
       <nav className="bg-white border-b border-gray-200 sticky top-0 z-40" role="navigation" aria-label="Main navigation">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 no-underline shrink-0" aria-label="AmritCare AI Home">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-teal-500 to-teal-700 flex items-center justify-center shadow-sm">
+          <Link href="/" className="flex items-center gap-2.5 no-underline shrink-0" aria-label="AmritCare home">
+            <div className="w-9 h-9 rounded-lg bg-teal-700 flex items-center justify-center shadow-sm">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
             </div>
             <span className="text-xl font-bold text-gray-900 tracking-tight">
-              Amrit<span className="text-teal-600">Care</span>{" "}
-              <span className="text-[11px] font-semibold text-teal-700 bg-teal-50 px-1.5 py-0.5 rounded-md border border-teal-200">AI</span>
+              Amrit<span className="text-teal-600">Care</span>
             </span>
           </Link>
 

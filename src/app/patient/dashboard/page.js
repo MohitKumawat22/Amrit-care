@@ -189,7 +189,7 @@ export default function PatientDashboard() {
         {/* Welcome */}
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-gray-800">
-            Welcome back, <span className="text-teal-600">{patient.firstName}</span> 👋
+            Welcome back, <span className="text-teal-600">{patient.firstName}</span>
           </h1>
           <p className="text-gray-500 mt-1">Here's your health overview for today</p>
         </div>
@@ -265,7 +265,7 @@ export default function PatientDashboard() {
               <span className={`text-xs px-2.5 py-1 rounded-full font-medium border ${
                 dataSource === "mappls" ? "bg-green-50 text-green-600 border-green-200" : "bg-amber-50 text-amber-600 border-amber-200"
               }`}>
-                {dataSource === "mappls" ? "📍 Live — Near You" : "📋 Default listing"}
+                {dataSource === "mappls" ? "Live — Near You" : "Default listing"}
               </span>
             )}
           </div>
@@ -319,7 +319,7 @@ export default function PatientDashboard() {
                   </div>
                   <div className="flex items-center justify-between">
                     <span className={`text-xs font-medium px-2.5 py-1 rounded-full border ${doctor.available ? "bg-green-50 text-green-600 border-green-200" : "bg-red-50 text-red-500 border-red-200"}`}>
-                      {doctor.available ? "✓ Available Today" : "✗ Not Available"}
+                      {doctor.available ? "Available Today" : "Not Available"}
                     </span>
                     <button disabled={!doctor.available} onClick={() => setBookingDoctor(doctor)} className="btn-primary text-sm px-4 py-2">
                       Book Now

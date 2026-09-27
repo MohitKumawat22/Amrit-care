@@ -56,12 +56,12 @@ export default function DoctorProfilePage() {
  });
 
  if (res.ok) {
- setMessage("✅ Profile saved successfully!");
+ setMessage("Profile saved successfully.");
  } else {
- setMessage("❌ Failed to save profile.");
+ setMessage("Failed to save profile.");
  }
  } catch (err) {
- setMessage("❌ Error connecting to server.");
+ setMessage("Error connecting to server.");
  } finally {
  setLoading(false);
  }
@@ -155,7 +155,7 @@ export default function DoctorProfilePage() {
  </div>
 
  <div className="flex items-center justify-between">
- <p className={`text-sm font-bold ${message.includes("✅") ?"text-green-600" :"text-red-600"}`}>{message}</p>
+ <p className={`text-sm font-bold ${message.includes("successfully") ?"text-green-600" :"text-red-600"}`}>{message}</p>
  <button
  type="submit"
  disabled={loading}

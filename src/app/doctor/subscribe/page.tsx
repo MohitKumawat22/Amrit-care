@@ -72,7 +72,7 @@ export default function DoctorSubscription() {
  <Lock className="w-5 h-5 text-slate-400" />
  Secure Checkout
  </div>
- <button onClick={() => !isProcessing && !isPaid && setShowModal(false)} className="text-slate-400 hover:text-slate-600">✕</button>
+ <button onClick={() => !isProcessing && !isPaid && setShowModal(false)} className="text-slate-400 hover:text-slate-600" aria-label="Close">Close</button>
  </div>
  <div className="p-6">
  {!isPaid ? (

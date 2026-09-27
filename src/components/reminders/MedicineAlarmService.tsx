@@ -73,7 +73,7 @@ export default function MedicineAlarmService() {
 
  // Browser Notification
  if ("Notification" in window && Notification.permission ==="granted") {
- const notification = new Notification("💊 Medicine Time!", {
+ const notification = new Notification("Medicine time", {
  body: `It's time to take your ${med.medicineName} (${med.dosage})`,
  icon:"/favicon.ico",
  tag:"medicine-alarm",
@@ -102,7 +102,7 @@ export default function MedicineAlarmService() {
  return (
  <div className="fixed inset-x-0 top-0 z-[9999] p-4 flex justify-center animate-bounce">
  <div className="bg-red-600 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-4 border-2 border-white">
- <div className="text-3xl animate-pulse">🔔</div>
+ <div className="text-sm font-semibold text-teal-700" aria-hidden="true">Reminder</div>
  <div>
  <h4 className="font-bold">Medicine Reminder!</h4>
  <p className="text-sm opacity-90">Please take your medicine now.</p>

@@ -129,12 +129,12 @@ export default function ChatbotWidget() {
               });
               const callData = await callRes.json();
               if (callRes.ok) {
-                replyText += `\n\n✅ Done! Your call is scheduled for ${new Date(action.datetime).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}.`;
+                replyText += `\n\nDone. Your call is scheduled for ${new Date(action.datetime).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}.`;
               } else {
-                replyText += `\n\n⚠️ Couldn't schedule call: ${callData.error || "Unknown error"}.`;
+                replyText += `\n\nCouldn't schedule call: ${callData.error || "Unknown error"}.`;
               }
             } catch {
-              replyText += "\n\n⚠️ There was an error scheduling your call.";
+              replyText += "\n\nThere was an error scheduling your call.";
             }
           }
 
@@ -143,7 +143,7 @@ export default function ChatbotWidget() {
               setIsOpen(false);
               router.push(action.path);
             }, 1200);
-            replyText += `\n\n➡️ Navigating to ${action.path}...`;
+            replyText += `\n\nNavigating to ${action.path}...`;
           }
         }
       }
@@ -174,7 +174,7 @@ export default function ChatbotWidget() {
         body: JSON.stringify({ patientId: patient.id, report: { fileName: file.name, content: textContent } }),
       });
       setReports((prev) => [...prev, { fileName: file.name, uploadedAt: new Date() }]);
-      setMessages((prev) => [...prev, { role: "bot", text: `📄 Report "${file.name}" uploaded. I'll use this for your health assessments.` }]);
+      setMessages((prev) => [...prev, { role: "bot", text: `Report "${file.name}" uploaded. I'll use this for your health assessments.` }]);
     } catch {
       setMessages((prev) => [...prev, { role: "bot", text: "Sorry, couldn't process that file. Try a .txt or describe it in chat." }]);
     } finally {
