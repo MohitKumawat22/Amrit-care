@@ -6,9 +6,7 @@ import { Download, WifiOff, X, CheckCircle2, Smartphone } from "lucide-react";
 export default function PWAProvider({ children }) {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showInstallBanner, setShowInstallBanner] = useState(false);
-  const [isOffline, setIsOffline] = useState(() =>
-    typeof navigator !== "undefined" && !navigator.onLine
-  );
+  const [isOffline, setIsOffline] = useState(false);
   const [isInstalled, setIsInstalled] = useState(() =>
     typeof window !== "undefined" &&
     (window.matchMedia("(display-mode: standalone)").matches ||
@@ -16,18 +14,22 @@ export default function PWAProvider({ children }) {
   );
 
   useEffect(() => {
+    const connectivityController = new AbortController();
+
     // 1. Service Worker Registration
+    const registerServiceWorker = () => {
+      navigator.serviceWorker
+        .register("/sw.js")
+        .then((reg) => {
+          console.log("AmritCare PWA ServiceWorker registered with scope:", reg.scope);
+        })
+        .catch((err) => {
+          console.warn("ServiceWorker registration failed:", err);
+        });
+    };
+
     if (typeof window !== "undefined" && "serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker
-          .register("/sw.js")
-          .then((reg) => {
-            console.log("AmritCare PWA ServiceWorker registered with scope:", reg.scope);
-          })
-          .catch((err) => {
-            console.warn("ServiceWorker registration failed:", err);
-          });
-      });
+      window.addEventListener("load", registerServiceWorker);
     }
 
     // 2. Check if already running in standalone PWA mode
@@ -45,15 +47,39 @@ export default function PWAProvider({ children }) {
     window.addEventListener("beforeinstallprompt", handleBeforeInstall);
 
     // 4. Offline / Online Status Listeners
-    const handleOnline = () => setIsOffline(false);
+    const checkConnectivity = async () => {
+      try {
+        const response = await fetch("/", {
+          cache: "no-store",
+          credentials: "same-origin",
+          signal: connectivityController.signal,
+        });
+        if (!connectivityController.signal.aborted) {
+          setIsOffline(!response.ok);
+        }
+      } catch {
+        if (!connectivityController.signal.aborted) {
+          setIsOffline(true);
+        }
+      }
+    };
+
+    const handleOnline = () => {
+      void checkConnectivity();
+    };
     const handleOffline = () => setIsOffline(true);
 
     window.addEventListener("online", handleOnline);
     window.addEventListener("offline", handleOffline);
+    window.addEventListener("load", checkConnectivity);
+    void checkConnectivity();
     return () => {
+      connectivityController.abort();
       window.removeEventListener("beforeinstallprompt", handleBeforeInstall);
       window.removeEventListener("online", handleOnline);
       window.removeEventListener("offline", handleOffline);
+      window.removeEventListener("load", registerServiceWorker);
+      window.removeEventListener("load", checkConnectivity);
     };
   }, []);
 
