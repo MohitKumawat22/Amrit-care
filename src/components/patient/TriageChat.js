@@ -212,6 +212,7 @@ export default function TriageChat() {
   const [toast, setToast] = useState("");
   const chatEndRef = useRef(null);
   const inputRef = useRef(null);
+  const lastResponseRef = useRef("");
 
   // Text chat hook
   const { isTalking: avatarTalkingText, response, loading, actions, sendMessage } = useAvatarChat();
@@ -224,7 +225,8 @@ export default function TriageChat() {
 
   // Add text AI responses to messages
   useEffect(() => {
-    if (response) {
+    if (response && response !== lastResponseRef.current) {
+      lastResponseRef.current = response;
       setMessages((prev) => [...prev, { role: "assistant", text: response, actions, time: new Date() }]);
     }
   }, [response, actions]);

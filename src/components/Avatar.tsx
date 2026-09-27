@@ -25,6 +25,7 @@ export function Avatar({ currentMessage, isTalking }) {
 
  // Remap FBX track names to match GLB bone names
  const cleanAnim = (anim) => {
+ if (!anim) return null;
  anim.tracks = anim.tracks
  .filter((track) => !track.name.startsWith("Armature."))
  .map((track) => {
@@ -35,15 +36,18 @@ export function Avatar({ currentMessage, isTalking }) {
  return anim;
  };
 
- cleanAnim(idleAnim[0]).name ="Idle";
- cleanAnim(talkingAnim[0]).name ="Speech";
- cleanAnim(greetingAnim[0]).name ="Greeting";
+ const idleClip = cleanAnim(idleAnim?.[0]);
+ const talkingClip = cleanAnim(talkingAnim?.[0]);
+ const greetingClip = cleanAnim(greetingAnim?.[0]);
+ if (idleClip) idleClip.name ="Idle";
+ if (talkingClip) talkingClip.name ="Speech";
+ if (greetingClip) greetingClip.name ="Greeting";
 
  const [animation, setAnimation] = useState("Idle");
  const group = useRef();
 
  const { actions } = useAnimations(
- [idleAnim[0], talkingAnim[0], greetingAnim[0]],
+ [idleClip, talkingClip, greetingClip].filter(Boolean),
  group
  );
 
